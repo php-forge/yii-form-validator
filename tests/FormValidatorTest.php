@@ -17,11 +17,13 @@ final class FormValidatorTest extends TestCase
         $formModel = new RuleAttributeModel();
         $validator = new Validator(new SimpleRuleHandlerContainer());
 
-        $formModel->setValue('email', '');
+        $formModel->load(['RuleAttributeModel' => ['email' => '']]);
         $this->assertFalse($validator->validate($formModel)->isValid());
+        $this->assertSame('Value cannot be blank.', $formModel->Error()->getFirst('email'));
 
-        $formModel->setValue('email', 'samdark');
+        $formModel->load(['RuleAttributeModel' => ['email' => 'samdark']]);
         $this->assertTrue($validator->validate($formModel)->isValid());
+        $this->assertsame('', $formModel->Error()->getFirst('email'));
     }
 
     public function testValidateWithRules(): void
@@ -29,10 +31,12 @@ final class FormValidatorTest extends TestCase
         $formModel = new RuleModel();
         $validator = new Validator(new SimpleRuleHandlerContainer());
 
-        $formModel->setValue('email', '');
+        $formModel->load(['RuleModel' => ['email' => '']]);
         $this->assertFalse($validator->validate($formModel)->isValid());
+        $this->assertSame('Value cannot be blank.', $formModel->Error()->getFirst('email'));
 
-        $formModel->setValue('email', 'samdark');
+        $formModel->load(['RuleModel' => ['email' => 'samdark']]);
         $this->assertTrue($validator->validate($formModel)->isValid());
+        $this->assertsame('', $formModel->Error()->getFirst('email'));
     }
 }
