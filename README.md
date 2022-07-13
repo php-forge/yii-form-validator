@@ -6,6 +6,7 @@
     <br>
 </p>
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9162004c4dfb4d1ebef4d839ac0acb1a)](https://app.codacy.com/gh/php-forge/yii-form-validator?utm_source=github.com&utm_medium=referral&utm_content=php-forge/yii-form-validator&utm_campaign=Badge_Grade_Settings)
 [![Build Status](https://github.com/php-forge/yii-form-validator/workflows/build/badge.svg)](https://github.com/php-forge/yii-form-validator/actions?query=workflow%3Abuild)
 [![codecov](https://codecov.io/gh/php-forge/yii-form-validator/branch/main/graph/badge.svg?token=KB6T5KMGED)](https://codecov.io/gh/php-forge/yii-form-validator)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fphp-forge%2Fyii-form-validator%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/php-forge/yii-form-validator/main)
