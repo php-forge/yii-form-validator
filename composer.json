@@ -1,5 +1,5 @@
 {
-    "name": "php-forge/yii-form-validator",
+    "name": "forge/yii-form-validator",
     "type": "library",
     "description": "Implementación de la validación de Yii3 en formularios",
     "keywords": [
