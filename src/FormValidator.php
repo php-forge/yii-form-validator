@@ -12,11 +12,9 @@ use Yiisoft\Validator\RulesProviderInterface;
 
 abstract class FormValidator extends FormModel implements PostValidationHookInterface, RulesProviderInterface
 {
-    public function getRules(): iterable
+    public function getRules(): array
     {
-        $attributeDataSet = new AttributeDataSet($this, $this->getData());
-
-        return $attributeDataSet->getRules();
+        return [];
     }
 
     public function processValidationResult(Result $result): void
@@ -26,6 +24,13 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
                 $this->addErrors([$attribute => $errors]);
             }
         }
+    }
+
+    protected function getRulesByAttributes(): iterable
+    {
+        $attributeDataSet = new AttributeDataSet($this, $this->getData());
+
+        return $attributeDataSet->getRules();
     }
 
     /**

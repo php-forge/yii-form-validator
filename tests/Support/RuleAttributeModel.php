@@ -11,4 +11,9 @@ final class RuleAttributeModel extends FormValidator
 {
     #[Required]
     private string $email = '';
+
+    public function getRules(): array
+    {
+        return $this->getRulesByAttributes();
+    }
 }
