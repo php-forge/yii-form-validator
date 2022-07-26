@@ -47,28 +47,24 @@ final class FormValidatorTest extends TestCase
     public function testValidateWithAttributesOptionsHasLength(): void
     {
         $formModel = new RuleAttributeModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['maxlength' => 10, 'minlength' => 1], $formModel->getRuleOptionsAttribute('hasLength'));
     }
 
     public function testValidateWithAttributesOptionsNumber(): void
     {
         $formModel = new RuleAttributeModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['max' => 10, 'min' => 1], $formModel->getRuleOptionsAttribute('number'));
     }
 
     public function testValidateWithAttributesOptionsRegex(): void
     {
         $formModel = new RuleAttributeModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['pattern' => '^[a-zA-Z0-9]{1,10}$'], $formModel->getRuleOptionsAttribute('regex'));
     }
 
     public function testValidateWithAttributesOptionsRequired(): void
     {
         $formModel = new RuleAttributeModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['required' => true], $formModel->getRuleOptionsAttribute('required'));
     }
 
@@ -108,35 +104,30 @@ final class FormValidatorTest extends TestCase
     public function testValidateWithRulesOptionsHasLength(): void
     {
         $formModel = new RuleModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['maxlength' => 10, 'minlength' => 1], $formModel->getRuleOptionsAttribute('hasLength'));
     }
 
     public function testValidateWithRulesOptionsHasNumber(): void
     {
         $formModel = new RuleModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['max' => 10, 'min' => 1], $formModel->getRuleOptionsAttribute('number'));
     }
 
     public function testValidateWithRulesOptionsRegex(): void
     {
         $formModel = new RuleModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['pattern' => '^[a-zA-Z0-9]{1,10}$'], $formModel->getRuleOptionsAttribute('regex'));
     }
 
     public function testValidateWithRulesOptionsRequired(): void
     {
         $formModel = new RuleModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(['required' => true], $formModel->getRuleOptionsAttribute('required'));
     }
 
     public function testValidateWithRulesOptionsUrl(): void
     {
         $formModel = new RuleModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(
             ['pattern' => '^((?i)http|https):\/\/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)(?::\d{1,5})?([?\/#].*$|$)'],
             $formModel->getRuleOptionsAttribute('url'),
