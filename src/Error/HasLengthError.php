@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Forge\FormValidator\Error;
 
-use function mb_strlen;
+use function strlen;
 
 trait HasLengthError
 {
