@@ -8,8 +8,6 @@ trait EmailError
 {
     public function getEmailErrorMessage(): string
     {
-        return $this->translator
-            ->withCategory('yii-form-validator')
-            ->translate('email.error');
+        return $this->translator->withCategory('yii-form-validator')->translate('email.error');
     }
 }

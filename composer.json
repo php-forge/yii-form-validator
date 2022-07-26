@@ -13,7 +13,8 @@
     "require": {
         "php": "^8.0",
         "forge/form": "^1.0@dev",
-        "yiisoft/validator": "@dev"
+        "yiisoft/translator-message-php": "^1.0",
+        "yiisoft/validator": "^3.0@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
