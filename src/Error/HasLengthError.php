@@ -10,9 +10,7 @@ trait HasLengthError
 {
     public function getHasLengthErrorMessge(): string
     {
-        return $this->translator
-            ->withCategory('yii-form-validator')
-            ->translate('hasLength.error');
+        return $this->translator->withCategory('yii-form-validator')->translate('hasLength.error');
     }
 
     public function getHasLengthTooShortErrorMessage(int $min, string $value): string

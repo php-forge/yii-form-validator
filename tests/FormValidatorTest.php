@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Forge\FormValidator\Tests;
 
+use Forge\FormValidator\FormValidator;
 use Forge\FormValidator\Tests\Support\RuleAttributeModel;
 use Forge\FormValidator\Tests\Support\RuleModel;
 use PHPUnit\Framework\TestCase;
@@ -12,18 +13,73 @@ use Yiisoft\Validator\Validator;
 
 final class FormValidatorTest extends TestCase
 {
+    public function testGetRules(): void
+    {
+        $formModel = new class () extends FormValidator {
+        };
+
+        $this->assertSame([], $formModel->getRules());
+    }
+
     public function testValidateWithAttributes(): void
     {
         $formModel = new RuleAttributeModel();
         $validator = new Validator(new SimpleRuleHandlerContainer());
 
-        $formModel->load(['RuleAttributeModel' => ['email' => '']]);
+        $formModel->load(['RuleAttributeModel' => ['required' => '']]);
         $this->assertFalse($validator->validate($formModel)->isValid());
-        $this->assertSame('Value cannot be blank.', $formModel->Error()->getFirst('email'));
+        $this->assertSame('Value cannot be blank.', $formModel->Error()->getFirst('required'));
 
-        $formModel->load(['RuleAttributeModel' => ['email' => 'samdark']]);
+        $formModel->load(
+            [
+                'RuleAttributeModel' => [
+                    'hasLength' => 'sam',
+                    'number' => '2',
+                    'regex' => 'samdark',
+                    'required' => 'samdark',
+                    'url' => 'http://www.yiiframework.com',
+                ],
+            ],
+        );
         $this->assertTrue($validator->validate($formModel)->isValid());
-        $this->assertsame('', $formModel->Error()->getFirst('email'));
+    }
+
+    public function testValidateWithAttributesOptionsHasLength(): void
+    {
+        $formModel = new RuleAttributeModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['maxlength' => 10, 'minlength' => 1], $formModel->getRuleOptionsAttribute('hasLength'));
+    }
+
+    public function testValidateWithAttributesOptionsNumber(): void
+    {
+        $formModel = new RuleAttributeModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['max' => 10, 'min' => 1], $formModel->getRuleOptionsAttribute('number'));
+    }
+
+    public function testValidateWithAttributesOptionsRegex(): void
+    {
+        $formModel = new RuleAttributeModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['pattern' => '^[a-zA-Z0-9]{1,10}$'], $formModel->getRuleOptionsAttribute('regex'));
+    }
+
+    public function testValidateWithAttributesOptionsRequired(): void
+    {
+        $formModel = new RuleAttributeModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['required' => true], $formModel->getRuleOptionsAttribute('required'));
+    }
+
+    public function testValidateWithAttributesOptionsUrl(): void
+    {
+        $formModel = new RuleAttributeModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(
+            ['pattern' => '^((?i)http|https):\/\/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)(?::\d{1,5})?([?\/#].*$|$)'],
+            $formModel->getRuleOptionsAttribute('url')
+        );
     }
 
     public function testValidateWithRules(): void
@@ -31,12 +87,59 @@ final class FormValidatorTest extends TestCase
         $formModel = new RuleModel();
         $validator = new Validator(new SimpleRuleHandlerContainer());
 
-        $formModel->load(['RuleModel' => ['email' => '']]);
+        $formModel->load(['RuleModel' => ['required' => '']]);
         $this->assertFalse($validator->validate($formModel)->isValid());
-        $this->assertSame('Value cannot be blank.', $formModel->Error()->getFirst('email'));
+        $this->assertSame('Value cannot be blank.', $formModel->Error()->getFirst('required'));
 
-        $formModel->load(['RuleModel' => ['email' => 'samdark']]);
+        $formModel->load(
+            [
+                'RuleModel' => [
+                    'hasLength' => 'sam',
+                    'number' => '2',
+                    'regex' => 'samdark',
+                    'required' => 'samdark',
+                    'url' => 'http://www.yiiframework.com',
+                ],
+            ],
+        );
         $this->assertTrue($validator->validate($formModel)->isValid());
-        $this->assertsame('', $formModel->Error()->getFirst('email'));
+    }
+
+    public function testValidateWithRulesOptionsHasLength(): void
+    {
+        $formModel = new RuleModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['maxlength' => 10, 'minlength' => 1], $formModel->getRuleOptionsAttribute('hasLength'));
+    }
+
+    public function testValidateWithRulesOptionsHasNumber(): void
+    {
+        $formModel = new RuleModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['max' => 10, 'min' => 1], $formModel->getRuleOptionsAttribute('number'));
+    }
+
+    public function testValidateWithRulesOptionsRegex(): void
+    {
+        $formModel = new RuleModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['pattern' => '^[a-zA-Z0-9]{1,10}$'], $formModel->getRuleOptionsAttribute('regex'));
+    }
+
+    public function testValidateWithRulesOptionsRequired(): void
+    {
+        $formModel = new RuleModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(['required' => true], $formModel->getRuleOptionsAttribute('required'));
+    }
+
+    public function testValidateWithRulesOptionsUrl(): void
+    {
+        $formModel = new RuleModel();
+        $validator = new Validator(new SimpleRuleHandlerContainer());
+        $this->assertsame(
+            ['pattern' => '^((?i)http|https):\/\/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)(?::\d{1,5})?([?\/#].*$|$)'],
+            $formModel->getRuleOptionsAttribute('url'),
+        );
     }
 }
