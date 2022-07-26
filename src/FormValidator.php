@@ -14,6 +14,7 @@ use Yiisoft\Validator\Rule\Number;
 use Yiisoft\Validator\Rule\Regex;
 use Yiisoft\Validator\Rule\Required;
 use Yiisoft\Validator\Rule\Url;
+use Yiisoft\Validator\RuleInterface;
 use Yiisoft\Validator\RulesProviderInterface;
 
 abstract class FormValidator extends FormModel implements PostValidationHookInterface, RulesProviderInterface
@@ -35,7 +36,7 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
     public function getRuleOptionsAttribute(string $attribute): array
     {
         $attributes = [];
-        /** @psalm-var array<array-key, Rule> */
+        /** @psalm-var array<array-key, RuleInterface> */
         $formModelRules = $this->getRules();
         $rules = [];
 
@@ -43,7 +44,7 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
             $rules = $formModelRules[$attribute];
         }
 
-        /** @psalm-var array<array-key, Rule>  $rules */
+        /** @psalm-var array<array-key, RuleInterface>  $rules */
         foreach ($rules as $rule) {
             if ($rule instanceof HasLength) {
                 /** @var int|null */

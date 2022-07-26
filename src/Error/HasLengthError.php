@@ -17,13 +17,13 @@ trait HasLengthError
     {
         return $this->translator
             ->withCategory('yii-form-validator')
-            ->translate('hasLength.tooShortMessage.error', ['min' => $min, 'length' => mb_strlen($value)]);
+            ->translate('hasLength.tooShortMessage.error', ['min' => $min, 'length' => strlen($value)]);
     }
 
     public function getHasLengthTooLongErrorMessage(int $max, string $value): string
     {
         return $this->translator
             ->withCategory('yii-form-validator')
-            ->translate('hasLength.tooLongMessage.error', ['max' => $max, 'length' => mb_strlen($value)]);
+            ->translate('hasLength.tooLongMessage.error', ['max' => $max, 'length' => strlen($value)]);
     }
 }
