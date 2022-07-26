@@ -71,7 +71,6 @@ final class FormValidatorTest extends TestCase
     public function testValidateWithAttributesOptionsUrl(): void
     {
         $formModel = new RuleAttributeModel();
-        $validator = new Validator(new SimpleRuleHandlerContainer());
         $this->assertsame(
             ['pattern' => '^((?i)http|https):\/\/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)(?::\d{1,5})?([?\/#].*$|$)'],
             $formModel->getRuleOptionsAttribute('url')
