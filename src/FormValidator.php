@@ -46,11 +46,13 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
 
         /** @psalm-var array<array-key, RuleInterface>  $rules */
         foreach ($rules as $rule) {
-            $attributes = $this->checkRuleHasLength($rule);
-            $attributes = $this->checkRuleNumber($rule, $attributes);
-            $attributes = $this->checkRuleRegex($rule, $attributes);
-            $attributes = $this->checkRuleRequired($rule, $attributes);
-            $attributes = $this->checkRuleUrl($rule, $attributes);
+            if ($rule instanceof RuleInterface) {
+                $attributes = $this->checkRuleHasLength($rule);
+                $attributes = $this->checkRuleNumber($rule, $attributes);
+                $attributes = $this->checkRuleRegex($rule, $attributes);
+                $attributes = $this->checkRuleRequired($rule, $attributes);
+                $attributes = $this->checkRuleUrl($rule, $attributes);
+            }
         }
 
         return $attributes;
