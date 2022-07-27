@@ -7,6 +7,8 @@ namespace Forge\FormValidator\Tests;
 use Forge\FormValidator\FormValidator;
 use Forge\FormValidator\Tests\Support\RuleAttributeModel;
 use Forge\FormValidator\Tests\Support\RuleModel;
+use Forge\FormValidator\Tests\Support\TranslatorModel;
+use Forge\TestUtils\Assert;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Validator\SimpleRuleHandlerContainer;
 use Yiisoft\Validator\Validator;
@@ -19,6 +21,44 @@ final class FormValidatorTest extends TestCase
         };
 
         $this->assertSame([], $formModel->getRules());
+    }
+
+    public function testGetSchemaPattern(): void
+    {
+        $assert = new Assert();
+        $formModel = new TranslatorModel();
+
+        $this->assertSame(
+            "[//][^^][((][((][??][iI][))][hH][tT][tT][pP][||][hH][tT][tT][pP][sS][))][::][\\\][//][\\\][//][((][((][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][((][\\\][..][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][++][))][((][??][::][::][\\\][dD][{{][11][,,][55][}}][))][??][((][[[][??][\\\][//][##][]]][..][**][$$][||][$$][))][//]",
+            $assert->invokeMethod($formModel, 'getSchemePattern', ['/^((?i)http|https):\/\/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)(?::\d{1,5})?([?\/#].*$|$)/']),
+        );
+
+        $this->assertSame(
+            "[//][^^][((][((][??][iI][))][hH][tT][tT][pP][||][hH][tT][tT][pP][sS][))][::][\\\][//][\\\][//][((][((][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][((][\\\][..][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][++][))][((][??][::][::][\\\][dD][{{][11][,,][55][}}][))][??][((][[[][??][\\\][//][##][]]][..][**][$$][||][$$][))][//]",
+            $assert->invokeMethod(
+                $formModel,
+                'getSchemePattern',
+                ['/^((?i)http|https):\/\/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)(?::\d{1,5})?([?\/#].*$|$)/'],
+            ),
+        );
+
+        $this->assertSame(
+            "[//][^^][((][((][??][iI][))][hH][tT][tT][pP][||][hH][tT][tT][pP][sS][))][::][\\\][//][\\\][//][((][((][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][((][\\\][..][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][++][))][((][??][::][::][\\\][dD][{{][11][,,][55][}}][))][??][((][[[][??][\\\][//][##][]]][..][**][$$][||][$$][))][//]",
+            $assert->invokeMethod(
+                $formModel,
+                'getSchemePattern',
+                ['/^((?i)HTTP|HTTPS):\/\/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+)(?::\d{1,5})?([?\/#].*$|$)/'],
+            ),
+        );
+
+        $this->assertSame(
+            "[//][((][((][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][((][\\\][..][[[][aA][--][zZ][aA][--][zZ][00][--][99][]]][[[][aA][--][zZ][aA][--][zZ][00][--][99][__][--][]]][**][))][++][))][..][**][$$][//]",
+            $assert->invokeMethod(
+                $formModel,
+                'getSchemePattern',
+                ["/(([a-zA-Z0-9][a-zA-Z0-9_-]*)(\.[a-zA-Z0-9][a-zA-Z0-9_-]*)+).*$/"],
+            ),
+        );
     }
 
     public function testValidateWithAttributes(): void

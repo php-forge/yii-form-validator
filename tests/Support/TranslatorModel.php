@@ -7,6 +7,7 @@ namespace Forge\FormValidator\Tests\Support;
 use Forge\FormValidator\Error;
 use Forge\FormValidator\FormValidator;
 use Yiisoft\Translator\CategorySource;
+use Yiisoft\Translator\Formatter\Simple\SimpleMessageFormatter;
 use Yiisoft\Translator\Message\Php\MessageSource;
 use Yiisoft\Translator\MessageFormatterInterface;
 use Yiisoft\Translator\Translator;
@@ -31,16 +32,6 @@ final class TranslatorModel extends FormValidator
     {
         $messageSource = new MessageSource(dirname(__DIR__, 2) . '/storage/message');
 
-        return new CategorySource('yii-form-validator', $messageSource, $this->createMessageFormatter());
-    }
-
-    private function createMessageFormatter(): MessageFormatterInterface
-    {
-        return new class () implements MessageFormatterInterface {
-            public function format(string $message, array $parameters, string $locale): string
-            {
-                return $message;
-            }
-        };
+        return new CategorySource('yii-form-validator', $messageSource, new SimpleMessageFormatter());
     }
 }
