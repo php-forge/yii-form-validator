@@ -19,7 +19,8 @@
     "require-dev": {
         "phpunit/phpunit": "*",
         "roave/infection-static-analysis-plugin": "*",
-        "vimeo/psalm": "*"
+        "vimeo/psalm": "*",
+        "yiisoft/translator-formatter-simple": "^1.0"
     },
     "autoload": {
         "psr-4": {
