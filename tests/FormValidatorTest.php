@@ -7,8 +7,6 @@ namespace Forge\FormValidator\Tests;
 use Forge\FormValidator\FormValidator;
 use Forge\FormValidator\Tests\Support\RuleAttributeModel;
 use Forge\FormValidator\Tests\Support\RuleModel;
-use Forge\FormValidator\Tests\Support\TranslatorModel;
-use Forge\TestUtils\Assert;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Validator\SimpleRuleHandlerContainer;
 use Yiisoft\Validator\Validator;
