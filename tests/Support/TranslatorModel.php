@@ -9,7 +9,6 @@ use Forge\FormValidator\FormValidator;
 use Yiisoft\Translator\CategorySource;
 use Yiisoft\Translator\Formatter\Simple\SimpleMessageFormatter;
 use Yiisoft\Translator\Message\Php\MessageSource;
-use Yiisoft\Translator\MessageFormatterInterface;
 use Yiisoft\Translator\Translator;
 
 final class TranslatorModel extends FormValidator
