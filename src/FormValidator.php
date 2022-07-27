@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Forge\FormValidator;
 
+use Forge\Html\Helper\Attribute;
 use Forge\Html\Helper\Utils;
 use Forge\Model\FormModel;
 use Yiisoft\Validator\DataSet\AttributeDataSet;
@@ -46,11 +47,13 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
 
         /** @psalm-var array<array-key, RuleInterface>  $rules */
         foreach ($rules as $rule) {
-            $attributes = $this->checkRuleHasLength($rule);
-            $attributes = $this->checkRuleNumber($rule, $attributes);
-            $attributes = $this->checkRuleRegex($rule, $attributes);
-            $attributes = $this->checkRuleRequired($rule, $attributes);
-            $attributes = $this->checkRuleUrl($rule, $attributes);
+            if ($rule instanceof RuleInterface) {
+                $this->checkRuleHasLength($rule, $attributes);
+                $this->checkRuleNumber($rule, $attributes);
+                $this->checkRuleRegex($rule, $attributes);
+                $this->checkRuleRequired($rule, $attributes);
+                $this->checkRuleUrl($rule, $attributes);
+            }
         }
 
         return $attributes;
@@ -63,71 +66,65 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
         return $attributeDataSet->getRules();
     }
 
-    private function checkRuleHasLength(RuleInterface $rule): array
+    private function checkRuleHasLength(RuleInterface $rule, array &$attributes): void
     {
-        $attributes = [];
-
         if ($rule instanceof HasLength) {
-            /** @var int|null */
-            $attributes['maxlength'] = $rule->getOptions()['max'] !== null ? $rule->getOptions()['max'] : null;
-            /** @var int|null */
-            $attributes['minlength'] = $rule->getOptions()['min'] !== null ? $rule->getOptions()['min'] : null;
+            Attribute::add(
+                $attributes,
+                'maxlength',
+                $rule->getOptions()['max'] !== null ? $rule->getOptions()['max'] : null,
+            );
+            Attribute::add(
+                $attributes,
+                'minlength',
+                $rule->getOptions()['min'] !== null ? $rule->getOptions()['min'] : null,
+            );
         }
-
-        return $attributes;
     }
 
-    private function checkRuleNumber(RuleInterface $rule, array $attributes): array
+    private function checkRuleNumber(RuleInterface $rule, array &$attributes): void
     {
         if ($rule instanceof Number) {
-            /** @var int|null */
-            $attributes['max'] = $rule->getOptions()['max'] !== null ? $rule->getOptions()['max'] : null;
-            /** @var int|null */
-            $attributes['min'] = $rule->getOptions()['min'] !== null ? $rule->getOptions()['min'] : null;
+            Attribute::add(
+                $attributes,
+                'max',
+                $rule->getOptions()['max'] !== null ? $rule->getOptions()['max'] : null,
+            );
+            Attribute::add(
+                $attributes,
+                'min',
+                $rule->getOptions()['min'] !== null ? $rule->getOptions()['min'] : null,
+            );
         }
-
-        return $attributes;
     }
 
-    private function checkRuleRegex(RuleInterface $rule, array $attributes): array
+    private function checkRuleRegex(RuleInterface $rule, array &$attributes): void
     {
         if ($rule instanceof Regex) {
             /** @var string */
             $pattern = $rule->getOptions()['pattern'];
-            $attributes['pattern'] = Utils::normalizeRegexpPattern($pattern);
+            Attribute::add(
+                $attributes,
+                'pattern',
+                Utils::normalizeRegexpPattern($pattern),
+            );
         }
-
-        return $attributes;
     }
 
-    private function checkRuleRequired(RuleInterface $rule, array $attributes): array
+    private function checkRuleRequired(RuleInterface $rule, array &$attributes): void
     {
         if ($rule instanceof Required) {
-            $attributes['required'] = true;
+            Attribute::add($attributes, 'required', true);
         }
-
-        return $attributes;
     }
 
-    private function checkRuleUrl(RuleInterface $rule, array $attributes): array
+    private function checkRuleUrl(RuleInterface $rule, array &$attributes): void
     {
         if ($rule instanceof Url) {
-            /** @var array<array-key, string> */
-            $validSchemes = $rule->getOptions()['validSchemes'];
-
-            $schemes = [];
-
-            foreach ($validSchemes as $scheme) {
-                $schemes[] = $this->getSchemePattern($scheme);
-            }
-
-            /** @var array<array-key, float|int|string>|string */
+            /** @var string */
             $pattern = $rule->getOptions()['pattern'];
-            $normalizePattern = str_replace('{schemes}', '(' . implode('|', $schemes) . ')', $pattern);
-            $attributes['pattern'] = Utils::normalizeRegexpPattern($normalizePattern);
+            $attributes['pattern'] = Utils::normalizeRegexpPattern($pattern);
         }
-
-        return $attributes;
     }
 
     /**
@@ -140,16 +137,5 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
                 $this->error()->add($attribute, $error);
             }
         }
-    }
-
-    private function getSchemePattern(string $scheme): string
-    {
-        $result = '';
-
-        for ($i = 0, $length = strlen($scheme); $i < $length; $i++) {
-            $result .= '[' . strtolower($scheme[$i]) . strtoupper($scheme[$i]) . ']';
-        }
-
-        return $result;
     }
 }
