@@ -121,7 +121,7 @@ abstract class FormValidator extends FormModel implements PostValidationHookInte
     private function checkRuleUrl(RuleInterface $rule, array &$attributes): void
     {
         if ($rule instanceof Url) {
-            /** @var array<array-key, float|int|string>|string */
+            /** @var string */
             $pattern = $rule->getOptions()['pattern'];
             $attributes['pattern'] = Utils::normalizeRegexpPattern($pattern);
         }
